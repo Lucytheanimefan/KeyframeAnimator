@@ -5,10 +5,11 @@ import PIL.Image
 import PIL.ImageTk
 from PIL import Image
 
+
 files = []
 
 
-def add_file(root):
+def add_file():
     filename = askopenfilename()
     if check_if_image_file(filename):
         files.append(filename)
@@ -17,21 +18,24 @@ def add_file(root):
         print("Sorry, not a valid image file")
 
 
-def display_images(root):
-    show_images(root)
+def display_images(root, max_width):
+    show_images(root, max_width)
 
 
-def show_images(root):
+def show_images(root, max_width):
     x = 0
     y = 0
     for image in files:
         show_image(image, root, 300, x, y, 20, 20)
         x += 300
+        if x >= max_width:
+            x = 0
+            y += 300
 
 
-def show_image(filename, root, width,x, y, colspan, rspan):
+def show_image(filename, root, img_width,x, y, colspan, rspan):
     im = Image.open(filename)
-    im = resize_image(width, im)
+    im = resize_image(img_width, im)
     my_image = PIL.ImageTk.PhotoImage(im)
     panel = tkinter.Label(root, image=my_image)
     panel.image = my_image
