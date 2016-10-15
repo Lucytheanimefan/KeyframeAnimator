@@ -6,26 +6,43 @@ import PIL.ImageTk
 from PIL import Image
 
 files = []
-basewidth = 300
 
 
 def add_file(root):
     filename = askopenfilename()
-    files.append(filename)
-    print(files)
     if check_if_image_file(filename):
-        show_image(filename, root)
+        files.append(filename)
+        print(files)
+    else:
+        print("Sorry, not a valid image file")
 
 
-def show_image(filename, root):
+def display_images(root):
+    show_images(root)
+
+
+def show_images(root):
+    x = 0
+    y = 0
+    for image in files:
+        show_image(image, root, 300, x, y, 20, 20)
+        x += 300
+
+
+def show_image(filename, root, width,x, y, colspan, rspan):
     im = Image.open(filename)
-    wpercent = (basewidth / float(im.size[0]))
-    hsize = int((float(im.size[1]) * float(wpercent)))
-    im = im.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+    im = resize_image(width, im)
     my_image = PIL.ImageTk.PhotoImage(im)
     panel = tkinter.Label(root, image=my_image)
     panel.image = my_image
-    panel.grid(row=0, column=0, columnspan=30, rowspan=30)
+    panel.grid(row=y, column=x, columnspan=colspan, rowspan=rspan)
+
+
+def resize_image(basewidth, im):
+    wpercent = (basewidth / float(im.size[0]))
+    hsize = int((float(im.size[1]) * float(wpercent)))
+    im = im.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+    return im
 
 
 def check_if_image_file(filename):
