@@ -8,6 +8,9 @@ from PIL import Image
 
 files = []
 
+def get_files():
+    return files
+
 
 def add_file():
     filename = askopenfilename()
